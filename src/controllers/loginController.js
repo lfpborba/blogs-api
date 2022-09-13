@@ -7,7 +7,7 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log(email, password);
+    // console.log(email, password);
 
     const account = await loginService.login(email, password);
 
@@ -17,7 +17,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ email, password }, JWT_SECRET);
 
-    console.log(token);
+    // console.log(token);
 
     return res.status(200).json({ token });
   } catch (err) {
