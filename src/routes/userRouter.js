@@ -8,5 +8,6 @@ const userRouter = Router();
 
 userRouter.post('/', userValidate.userValidate, userController.createUser);
 userRouter.get('/', tokenValidate.tokenValidate, userController.getAll);
+userRouter.get('/:id', tokenValidate.tokenValidate, userController.getById);
 
 module.exports = userRouter;

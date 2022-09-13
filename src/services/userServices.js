@@ -8,6 +8,19 @@ const getAll = async () => {
   return users;
 };
 
+const getById = async (id) => {
+  const userId = await User.findOne({
+    where: { id },
+    attributes: { exclude: ['password'] },
+  });
+
+  if (!userId) {
+    return { message: 'User does not exist' };
+  }
+
+  return userId;
+};
+
 const create = async (userInfo) => {
   const verifyUser = await User.findAll({
     where: { email: userInfo.email },
@@ -24,5 +37,6 @@ const create = async (userInfo) => {
 
 module.exports = {
   getAll,
+  getById,
   create,
 };

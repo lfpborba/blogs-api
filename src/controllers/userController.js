@@ -7,9 +7,22 @@ const getAll = async (_req, res) => {
   try {
     const users = await userServices.getAll();
 
-    console.log(users);
-
     return res.status(200).json(users);
+  } catch (err) {
+    return res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+};
+
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userById = await userServices.getById(id);
+
+    if (userById.message) {
+      return res.status(404).json(userById);
+    }
+
+    return res.status(200).json(userById);
   } catch (err) {
     return res.status(500).json({ message: 'Server Error', error: err.message });
   }
@@ -18,7 +31,6 @@ const getAll = async (_req, res) => {
 const createUser = async (req, res) => {
   try {
     const accountInfo = req.body;
-
     const newUser = await userServices.create(accountInfo);
 
     if (newUser.message) {
@@ -26,8 +38,6 @@ const createUser = async (req, res) => {
     }
 
     const token = jwt.sign(accountInfo, JWT_SECRET);
-
-    // console.log(token);
 
     return res.status(201).json({ token });
   } catch (err) {
@@ -37,5 +47,6 @@ const createUser = async (req, res) => {
 
 module.exports = {
   getAll,
+  getById,
   createUser,
 };
