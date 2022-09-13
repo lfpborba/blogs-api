@@ -15,12 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     tableName: 'Categories',
   });
-
-  Category.associate = (models) => {
-    User.hasMany(models.PostCategories, {
-      foreignKey: 'categoryId',
-      as: 'postCategory',
-    })
-  }
+  
   return Category;
 }
