@@ -22,12 +22,12 @@ const getById = async (id) => {
 };
 
 const create = async (userInfo) => {
-  const verifyUser = await User.findAll({
+  const validateUser = await User.findAll({
     where: { email: userInfo.email },
   });
 
-  if (verifyUser.length > 0) {
-    return { message: 'User already registered' };
+  if (validateUser.length > 0) {
+    return { message: 'User already exists' };
   }
 
   await User.create(userInfo);
