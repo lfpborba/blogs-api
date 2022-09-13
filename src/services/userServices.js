@@ -1,5 +1,13 @@
 const { User } = require('../database/models');
 
+const getAll = async () => {
+  const users = await User.findAll({
+    attributes: { exclude: ['password'] },
+  });
+
+  return users;
+};
+
 const create = async (userInfo) => {
   const verifyUser = await User.findAll({
     where: { email: userInfo.email },
@@ -15,5 +23,6 @@ const create = async (userInfo) => {
 };
 
 module.exports = {
+  getAll,
   create,
 };
