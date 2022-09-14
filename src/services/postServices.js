@@ -1,4 +1,4 @@
-const { BlogPost, Category, User } = require('../database/models');
+const { BlogPost, PostCategory, Category, sequelize, User } = require('../database/models');
 
 const getAll = async () => {
   const results = await BlogPost.findAll({
@@ -39,12 +39,50 @@ const getById = async (id) => {
   return results;
 };
 
+const categoryValidate = async (categoryIds) => {
+  const { rows } = await Category.findAndCountAll({
+    where: {
+      id: categoryIds,
+    },
+  });
+
+  if (rows.length !== categoryIds.length) {
+    return { message: '"categoryIds" not found' };
+  }
+
+  return true;
+};
+
+const createPost = async (postInfo, userId) => {
+  const { title, content } = postInfo;
+  const result = await sequelize.transaction(async (transaction) => {
+    const createdPost = await BlogPost.create(
+      { title, content, userId },
+      { transaction },
+    );
+
+    const postId = createdPost.dataValues.id;
+
+    const postCategories = postInfo.categoryIds
+      .map((categoryId) => ({ postId, categoryId }));
+
+    await PostCategory.bulkCreate(
+      postCategories,
+      { transaction },
+    );
+
+    return createdPost;
+  });
+
+  return result;
+};
+
 const authorValidate = async (postId, userId) => {
-  const results = await BlogPost.findOne({
+  const post = await BlogPost.findOne({
     where: { id: postId },
   });
 
-  if (results.userId !== userId) return { message: 'Unauthorized user' };
+  if (post.userId !== userId) return { message: 'Unauthorized user', code: 401 };
 
   return true;
 };
@@ -65,6 +103,8 @@ const postPUT = async (info, postId) => {
 module.exports = {
   getAll,
   getById,
+  categoryValidate,
+  createPost,
   authorValidate,
   postPUT,
 };

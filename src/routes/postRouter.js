@@ -1,14 +1,14 @@
 const { Router } = require('express');
 
-const postController = require('../controllers/postController');
+const postControl = require('../controllers/postController');
 const tokenValidate = require('../middlewares/tokenValidate');
-const postValidate = require('../middlewares/postValidate');
+const postValid = require('../middlewares/postValidate');
 
 const postRouter = Router();
 
-postRouter.get('/', tokenValidate.tokenValidate, postController.getAll);
-postRouter.get('/:id', tokenValidate.tokenValidate, postController.getById);
-postRouter.put('/:id', postValidate.postValidate,
-tokenValidate.tokenValidate, postController.postPUT);
+postRouter.get('/', tokenValidate.tokenValidate, postControl.getAll);
+postRouter.get('/:id', tokenValidate.tokenValidate, postControl.getById);
+postRouter.post('/', tokenValidate.tokenValidate, postValid.postValidate, postControl.createPost);
+postRouter.put('/:id', postValid.postValidate, tokenValidate.tokenValidate, postControl.postPUT);
 
 module.exports = postRouter;
