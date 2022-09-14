@@ -4,13 +4,15 @@ const { User } = require('../database/models');
 
 const { JWT_SECRET } = process.env;
 
+const code500Error = 'Server Error';
+
 const getAll = async (_req, res) => {
   try {
     const result = await postServices.getAll();
 
     return res.status(200).json(result);
   } catch (err) {
-    return res.status(500).json({ message: 'Server Error', error: err.message });
+    return res.status(500).json({ message: code500Error, error: err.message });
   }
 };
 
@@ -26,7 +28,7 @@ const getById = async (req, res) => {
 
     return res.status(200).json(results);
   } catch (err) {
-    return res.status(500).json({ message: 'Server Error', error: err.message });
+    return res.status(500).json({ message: code500Error, error: err.message });
   }
 };
 
@@ -49,7 +51,7 @@ const createPost = async (req, res) => {
 
     return res.status(201).json(newPost);
   } catch (err) {
-    return res.status(500).json({ message: 'Server Error', error: err.message });
+    return res.status(500).json({ message: code500Error, error: err.message });
   }
 };
 
@@ -78,9 +80,31 @@ const postPUT = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const { email } = jwt.verify(token, JWT_SECRET);
+
+  const { dataValues: { id: userId } } = await User.findOne({ where: { email } });
+
+  try {
+    const validatedPost = await postServices.authorValidate(id, userId);
+
+    if (validatedPost.message) {
+      return res.status(validatedPost.code).json({ message: validatedPost.message });
+    }
+    const removedPost = await postServices.deletePost(id);
+
+    return res.status(204).json(removedPost);
+  } catch (err) {
+    return res.status(500).json({ message: code500Error, error: err.message });
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   createPost,
   postPUT,
+  deletePost,
 };

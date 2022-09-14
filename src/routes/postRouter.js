@@ -10,5 +10,6 @@ postRouter.get('/', tokenValidate.tokenValidate, postControl.getAll);
 postRouter.get('/:id', tokenValidate.tokenValidate, postControl.getById);
 postRouter.post('/', tokenValidate.tokenValidate, postValid.postValidate, postControl.createPost);
 postRouter.put('/:id', postValid.postValidate, tokenValidate.tokenValidate, postControl.postPUT);
+postRouter.delete('/:id', tokenValidate.tokenValidate, postControl.deletePost);
 
 module.exports = postRouter;

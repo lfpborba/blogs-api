@@ -78,11 +78,12 @@ const createPost = async (postInfo, userId) => {
 };
 
 const authorValidate = async (postId, userId) => {
-  const post = await BlogPost.findOne({
+  const result = await BlogPost.findOne({
     where: { id: postId },
   });
 
-  if (post.userId !== userId) return { message: 'Unauthorized user', code: 401 };
+  if (!result) return { message: 'Post does not exist', code: 404 };
+  if (result.userId !== userId) return { message: 'Unauthorized user', code: 401 };
 
   return true;
 };
@@ -100,6 +101,13 @@ const postPUT = async (info, postId) => {
   return postUpdated;
 };
 
+const deletePost = async (postId) => {
+  await BlogPost.destroy({
+    where: { id: postId },
+  });
+  return { message: 'Post deleted' };
+};
+
 module.exports = {
   getAll,
   getById,
@@ -107,4 +115,5 @@ module.exports = {
   createPost,
   authorValidate,
   postPUT,
+  deletePost,
 };
