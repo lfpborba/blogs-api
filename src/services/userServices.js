@@ -27,7 +27,7 @@ const create = async (userInfo) => {
   });
 
   if (validateUser.length > 0) {
-    return { message: 'User already exists' };
+    return { message: 'User already registered' };
   }
 
   await User.create(userInfo);

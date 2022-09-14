@@ -31,20 +31,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {
-    updatedAt: false,
-    underscored: true,
-    tableName: 'BlogPost',
+    updatedAt: 'updated',
+    createdAt: 'published',
+    tableName: 'BlogPosts',
   });
 
   BlogPost.associate = (models) => {
     BlogPost.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'user'
-    }),
-
-    BlogPost.hasMany(models.BlogPost, {
-      foreignKey: 'postId',
-      as: 'postCategory',
     })
   }
   return BlogPost;
