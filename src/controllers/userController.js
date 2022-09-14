@@ -45,8 +45,22 @@ const createUser = async (req, res) => {
   }
 };
 
+const destroy = async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const { email } = jwt.verify(token, JWT_SECRET);
+
+    await userServices.destroy(email);
+
+    return res.status(204).end();
+  } catch (err) {
+    return res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   createUser,
+  destroy,
 };

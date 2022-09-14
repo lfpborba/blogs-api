@@ -12,7 +12,7 @@ const tokenValidate = async (req, res, next) => {
   }
 
   const { email } = jwt.verify(token, JWT_SECRET);
-  
+ 
   const user = await User.findOne({ where: { email } });
 
   if (!user) throw Error;
