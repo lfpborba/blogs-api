@@ -1,10 +1,10 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+# 💻 Projeto
+API RESTful para uma aplicação de produção de conteúdo para um blog utilizando Node.js e Sequelize.
+# 🚀 Tecnologias
+Este projeto foi desenvolvido com as seguintes tecnologias:
+-	Node.js
+-	Sequelize
+# 📌 Habilidades
+Neste projeto, desenvolvi as seguintes habilidades:
+-	Desenvolver uma API RESTful de um CRUD (Create, Read, Update e Delete);
+-	Utilizar o ORM Sequelize para a leitura e escrita em um banco de dados MySQL/PostgreSQL.
